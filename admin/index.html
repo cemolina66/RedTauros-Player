@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrador — Fiesta Musical v2.0</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo-container">
+                <h1>FIESTA MUSICAL v2.0</h1>
+                <p>Sistema de Votación Musical Autónomo — RedTauros</p>
+            </div>
+            <div class="system-status-indicator" id="system-status">
+                <div class="status-dot idle" id="status-dot"></div>
+                <span id="status-text">Cargando sistema...</span>
+            </div>
+        </header>
+
+        <!-- LEFT COLUMN: PLAYER & CONFIG -->
+        <div class="player-column">
+            <!-- ACTIVE PLAYER CARD -->
+            <div class="card active-player-card">
+                <div class="card-title">
+                    <span>🎵 Reproductor Principal</span>
+                </div>
+                
+                <div class="song-info-container">
+                    <div class="vinyl-disc" id="vinyl">
+                        <div class="vinyl-center"></div>
+                    </div>
+                    <div class="active-song-details">
+                        <div class="active-song-title" id="song-title">Sin reproducción</div>
+                        <div class="active-song-artist" id="song-artist">Selecciona iniciar fiesta</div>
+                        <span class="active-song-genre-tag" id="song-genre" style="background-color: var(--border-color); color: var(--text-secondary);">❓ Desconocido</span>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-track" id="progress-track">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="time-stamps">
+                        <span id="time-current">0:00</span>
+                        <span id="time-total">0:00</span>
+                    </div>
+                </div>
+
+                <div class="player-controls">
+                    <button class="btn btn-primary" id="btn-play-pause">▶ Iniciar Fiesta</button>
+                    <button class="btn" id="btn-skip">⏭ Forzar Siguiente (Skip)</button>
+                    <button class="btn btn-danger" id="btn-stop" style="display:none;">⏹ Detener</button>
+                </div>
+            </div>
+
+            <!-- SESSION PARAMETERS -->
+            <div class="card">
+                <div class="card-title">
+                    <span>⚙ Parámetros de Transición y Sesión</span>
+                </div>
+                <div class="slider-group">
+                    <label style="width: 120px; font-size: 0.85rem; color: var(--text-secondary);">Fade Out (s):</label>
+                    <input type="range" id="param-fade-out" min="0" max="10" step="0.5" value="2">
+                    <span class="slider-val" id="val-fade-out">2.0s</span>
+                </div>
+                <div class="slider-group">
+                    <label style="width: 120px; font-size: 0.85rem; color: var(--text-secondary);">Fade In (s):</label>
+                    <input type="range" id="param-fade-in" min="0" max="10" step="0.5" value="1.5">
+                    <span class="slider-val" id="val-fade-in">1.5s</span>
+                </div>
+                <div class="slider-group">
+                    <label style="width: 120px; font-size: 0.85rem; color: var(--text-secondary);">Silencio (s):</label>
+                    <input type="range" id="param-silence" min="0" max="5" step="0.1" value="0.5">
+                    <span class="slider-val" id="val-silence">0.5s</span>
+                </div>
+                <div class="slider-group">
+                    <label style="width: 120px; font-size: 0.85rem; color: var(--text-secondary);">Anti-repetición N:</label>
+                    <input type="range" id="param-anti-repeat" min="0" max="20" step="1" value="10">
+                    <span class="slider-val" id="val-anti-repeat">10 canciones</span>
+                </div>
+                <button class="btn" id="btn-save-config" style="margin-top: 8px;">Guardar Parámetros</button>
+            </div>
+
+            <!-- LIBRARY CONFIG (FOLDERS) -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📁 Carpetas de Música</span>
+                </div>
+                <div class="form-group">
+                    <label>Agregar nueva ruta absoluta de carpeta:</label>
+                    <div class="form-control-row">
+                        <input type="text" id="input-folder-path" placeholder="Ej. C:/Musica/Salsa">
+                        <button class="btn btn-primary" id="btn-add-folder">Añadir</button>
+                    </div>
+                </div>
+                <div class="folder-list-container" id="folder-list">
+                    <!-- Folders populated via JS -->
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 8px;">
+                    <button class="btn" id="btn-scan" style="flex: 1;">🔍 Escaneo Rápido (Nuevo)</button>
+                    <button class="btn" id="btn-force-scan" style="flex: 1;">🔄 Escaneo Completo (Forzar)</button>
+                </div>
+            </div>
+
+            <!-- GENRE MANAGER -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📻 Activar/Desactivar Géneros</span>
+                </div>
+                <div class="genres-grid" id="genres-grid">
+                    <!-- Genres populated via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: RESULTS & LOGS -->
+        <div class="voting-column">
+            <!-- REAL-TIME VOTING RESULTS -->
+            <div class="card" style="flex-grow: 1;">
+                <div class="card-title">
+                    <span>📊 Votación de la Ronda (Votos Ponderados)</span>
+                </div>
+                <div id="voting-results-container" style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="color: var(--text-secondary); text-align: center; padding: 20px;">Sin ronda de votación activa. Presiona "Iniciar Fiesta".</div>
+                </div>
+            </div>
+
+            <!-- SHARE CONNECTION (QR) -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📱 Conexión de Clientes</span>
+                </div>
+                <div class="qr-container">
+                    <img id="qr-code" class="qr-code-img" alt="QR Code" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><rect width='100' height='100' fill='%23eee'/><text x='15' y='55' fill='%23666' font-family='sans-serif' font-size='12'>Generando...</text></svg>">
+                    <div class="qr-info">
+                        <p style="font-size: 0.9rem; font-weight: 500;">Escanea el QR para votar desde tu móvil</p>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">O accede en tu red local a:</p>
+                        <div class="qr-url-text" id="qr-url">http://cargando...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SYSTEM STATS -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📈 Estadísticas Generales</span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-total-songs">0</div>
+                        <div class="stat-label">Canciones</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-active-genres">0</div>
+                        <div class="stat-label">Géneros Activos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="stat-total-duration">0m</div>
+                        <div class="stat-label">Duración Total</div>
+                    </div>
+                </div>
+                <div>
+                    <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">Preferencias del público (Últimos 30 min):</p>
+                    <div id="stat-preferences" style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.8rem;">
+                        <span style="color: var(--text-muted);">Sin preferencias registradas</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLAY HISTORY -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📜 Historial Reciente</span>
+                </div>
+                <div class="history-list" id="history-list">
+                    <!-- History populated via JS -->
+                </div>
+            </div>
+
+            <!-- LOG TERMINAL -->
+            <div class="card">
+                <div class="card-title">
+                    <span>💻 Consola de Actividad</span>
+                </div>
+                <div class="log-terminal" id="log-terminal">
+                    <!-- Logs populated via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO PLAYER CORE ELEMENTS -->
+    <audio id="audio-a" preload="auto"></audio>
+    <audio id="audio-b" preload="auto"></audio>
+
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fiesta Musical — Votación Móvil</title>
+    
+    <!-- PWA Settings -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#08060f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <h1>FIESTA MUSICAL</h1>
+            <p>TU VOTO DECIDE LA MÚSICA</p>
+        </header>
+
+        <!-- INSTALL APP PWA BANNER -->
+        <div class="install-banner" id="install-banner" style="display: none;">
+            <div class="install-info">
+                <p>Instalar Fiesta Musical</p>
+                <span>Vota de forma más cómoda desde tu pantalla</span>
+            </div>
+            <button class="btn-install" id="btn-install">Instalar</button>
+        </div>
+
+        <!-- NOW PLAYING CARD -->
+        <div class="now-playing-card">
+            <div class="card-label">
+                <span class="pulse-dot" style="width: 6px; height: 6px; background-color: var(--accent-primary); border-radius:50%; box-shadow:0 0 6px var(--accent-primary);"></span>
+                <span>Sonando Ahora</span>
+            </div>
+            
+            <div class="song-info">
+                <div class="album-art-placeholder" id="album-art">🎧</div>
+                <div class="song-details">
+                    <div class="song-title" id="song-title">Cargando...</div>
+                    <div class="song-artist" id="song-artist">Espera un momento</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="time-stamps">
+                    <span id="time-current">0:00</span>
+                    <span id="time-total">0:00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VOTING OPTIONS SECTION -->
+        <div class="voting-section">
+            <div class="voting-title">Elige la Siguiente Canción</div>
+            <div class="voting-grid" id="voting-grid">
+                <!-- Voting buttons populated via JS -->
+                <div style="text-align: center; color: var(--text-secondary); padding: 20px; font-size: 0.9rem;">
+                    Buscando opciones de votación...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OFFLINE BANNER -->
+    <div class="offline-banner" id="offline-banner">
+        ⚠️ Sin conexión. Mostrando información local del último escaneo.
+    </div>
+
+    <script src="mobile.js"></script>
+</body>
+</html>

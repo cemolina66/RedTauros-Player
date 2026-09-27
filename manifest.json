@@ -1,0 +1,22 @@
+{
+  "short_name": "Fiesta Musical",
+  "name": "Fiesta Musical v2.0",
+  "description": "Votación musical autónoma y democrática en tiempo real.",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#08060f",
+  "theme-color": "#08060f",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
